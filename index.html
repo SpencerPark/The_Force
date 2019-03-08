@@ -383,7 +383,7 @@ circle(float x,
        float radius, 
        float edge-feathering) 
 
-// Tiles
+// Tiles (localX, localY, coordX, coordY)
 vec4 tile(vec2 tilesPerUnit, vec2 center);
 vec4 tile(vec2 tilesPerUnit);
 vec4 tile(float tilesPerUnit);
@@ -405,6 +405,13 @@ float triSplitTile(vec4 tile, float feather);
 float regPolyTile(vec4 tile, int sides, float width, float feather);
 float hexTile(vec4 tile, float width, float feather);
 float truchetTile(vec4 tile, float edgeWidth, float feather);
+
+// Punctual oscillators
+float phasor(float freq);
+float sinOsc(float freq);
+float triOsc(float freq);
+float sawOsc(float freq);
+float sqrOsc(float freq);
                 </pre>
             </div>
             <div id="tabsHelp-4">
