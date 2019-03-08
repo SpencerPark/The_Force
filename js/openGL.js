@@ -68,7 +68,11 @@ function createGlContext() {
         $.ajax({
             url: "shaders/header.frag",
             dataType: "text"
-        })).done(function (d, v, f, h) {
+        }),
+        $.ajax({
+            url: "shaders/tiles.frag",
+            dataType: "text"
+        })).done(function (d, v, f, h, t) {
 
         //build screen shader
         var res = createShader(v[0], f[0]);
@@ -121,7 +125,7 @@ function createGlContext() {
 
 
         vsScreen = v[0];
-        mHeader = h[0];
+        mHeader = h[0] + t[0];
         vsDraw = d[0];
         var res = newShader(vsDraw, fsNew);
         if (res.mSuccess === false) {
