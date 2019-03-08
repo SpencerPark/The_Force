@@ -9,9 +9,10 @@ uniform vec3      channelResolution[4];
 uniform vec4      bands;
 uniform vec4      bandsTime;
 uniform sampler2D backbuffer;
+uniform vec4      mouseN;
 
-float PI = 3.14159;
-float PI2 = 6.28318;
+const float PI = 3.14159;
+const float PI2 = 6.28318;
 
 vec3 black = vec3(0.0);
 vec3 white = vec3(1.0);

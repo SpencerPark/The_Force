@@ -13,6 +13,7 @@ var vsDraw = null;
 var elapsedBandPeaks = [0.0, 0.0, 0.0, 0.0];
 //unifoms
 var vertPosU, l2, l3, l4, l5, l6, l7, l8, ch0, ch1, ch2, ch3, ch4, bs, screenResU, screenTexU, screenBlendU, translateUniform, scaleUniform, rotateUniform, gammaU, bandsTimeU, midiU;
+var mouseNU;
 var resos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 var oscM = [null, null, null, null, null, null, null, null, null, null];
 var gammaValues = [1.0, 1.0, 1.0, 1.0];
@@ -52,10 +53,22 @@ function createGlContext() {
     resizeGLCanvas(window.innerWidth, window.innerHeight);
 
     //because I want to load shaders as files. :/
-    $.when($.ajax({ url: "shaders/draw.vert", dataType: "text" }),
-        $.ajax({ url: "shaders/screen.vert", dataType: "text" }),
-        $.ajax({ url: "shaders/screen.frag", dataType: "text" }),
-        $.ajax({ url: "shaders/header.frag", dataType: "text" })).done(function(d, v, f, h) {
+    $.when($.ajax({
+            url: "shaders/draw.vert",
+            dataType: "text"
+        }),
+        $.ajax({
+            url: "shaders/screen.vert",
+            dataType: "text"
+        }),
+        $.ajax({
+            url: "shaders/screen.frag",
+            dataType: "text"
+        }),
+        $.ajax({
+            url: "shaders/header.frag",
+            dataType: "text"
+        })).done(function (d, v, f, h) {
 
         //build screen shader
         var res = createShader(v[0], f[0]);
@@ -119,7 +132,9 @@ function createGlContext() {
 
     testTexture = gl.createTexture();
     testImage = new Image();
-    testImage.onload = function() { handleTextureLoaded(testImage, testTexture); }
+    testImage.onload = function () {
+        handleTextureLoaded(testImage, testTexture);
+    }
     testImage.src = "images/test.jpg";
 }
 
@@ -170,7 +185,7 @@ function newShader(vs, shaderCode) {
         return res;
     }
 
-    if (typeof(Storage) !== "undefined") {
+    if (typeof (Storage) !== "undefined") {
         localStorage.lastValidCode = shaderCode;
     }
 
@@ -187,6 +202,7 @@ function newShader(vs, shaderCode) {
     l5 = gl.getUniformLocation(mProgram, "channelTime");
     l7 = gl.getUniformLocation(mProgram, "date");
     l8 = gl.getUniformLocation(mProgram, "channelResolution");
+    mouseNU = gl.getUniformLocation(mProgram, "mouseN");
 
     ch0 = gl.getUniformLocation(mProgram, "channel0");
     ch1 = gl.getUniformLocation(mProgram, "channel1");
@@ -451,7 +467,8 @@ function updateKeyboardUp(event) {
     }
 }
 
-var d = null, dates = null;
+var d = null,
+    dates = null;
 
 function paint() {
     if (gl === null) return;
@@ -476,6 +493,14 @@ function paint() {
     if (l4 !== null) gl.uniform4f(l4, mMousePosX, mMousePosY, mMouseClickX, mMouseClickY);
     if (l7 !== null) gl.uniform4f(l7, d.getFullYear(), d.getMonth(), d.getDate(),
         d.getHours() * 60 * 60 + d.getMinutes() * 60 + d.getSeconds());
+    //vec4 mouseN = vec4(mouse.x/resolution.x/2., 1.-mouse.y/resolution.y/2., mouse.z/resolution.x/2., 1.-mouse.w/resolution.y/2.);
+    if (mouseNU != null) 
+        gl.uniform4f(mouseNU,
+            mMousePosX / mCanvas.width / 2.0, 
+            1.0 - mMousePosY / mCanvas.height / 2.0,
+            mMouseClickX / mCanvas.width / 2.0, 
+            1.0 - mMouseClickY / mCanvas.height / 2.0
+        );
 
     if (ch0 !== null) gl.uniform1i(ch0, 0);
     if (ch1 !== null) gl.uniform1i(ch1, 1);

@@ -231,11 +231,11 @@
                 <p>Sending to - localhost:7600</p>
                 <p>Direct Message</p>
                 <div>
-                <form id="myConsole">
-                <input type="text" id="consoleMessage" value="/out"/>
-                <input type="text" id="consoleValue" value=".9"/>
-                <input type="text" id="consoleLine" value="0"/>
-                </form>
+                    <form id="myConsole">
+                        <input type="text" id="consoleMessage" value="/out" />
+                        <input type="text" id="consoleValue" value=".9" />
+                        <input type="text" id="consoleLine" value="0" />
+                    </form>
                 </div>
                 <p>Auto Messages</p>
                 <div id="myOutputs">
@@ -321,6 +321,10 @@ resolution      = vec2(canvas width, canvas height); // value in pixels,
 time            = float;     // system time
 <!-- channelTime[4]  -->
 mouse           = vec4(mouse X, mouse Y, mouse click X, mouse click Y);
+mouseN          = vec4(mouse X, mouse Y, mouse click X, mouse click Y); 
+                  // normalized mouse. Same coords as uvN(). 
+                  // bottom-left = (0.0, 0.0)
+                  // top-right = (1.0, 1.0)
 date            = vec4(); 
 <!-- channelResolution[4]  -->
 bands           = vec4(low, mid-low, mid-high, high) // FFT results
