@@ -498,15 +498,24 @@ function paint() {
     //add uniform stuff
     if (l2 !== null) gl.uniform1f(l2, (Date.now() - mTime) * 0.001);
     if (l3 !== null) gl.uniform2f(l3, mCanvas.width, mCanvas.height);
-    if (l4 !== null) gl.uniform4f(l4, mMousePosX, mMousePosY, mMouseClickX, mMouseClickY);
+    // vec4 mouse = vec4(vec2(mouse.xy/resolution-1.0) * vec2(resolution.x / resolution.y, 1.0), vec2(mouse.zw/resolution-1.0) * vec2(resolution.x / resolution.y, 1.0));
+    if (l4 != null) {
+        var resRatio = mCanvas.width / mCanvas.height;
+        gl.uniform4f(l4,
+            (mMousePosX / mCanvas.width - 1.0) * resRatio,
+            -(mMousePosY / mCanvas.height - 1.0),
+            (mMouseClickX / mCanvas.width - 1.0) * resRatio,
+            -(mMouseClickY / mCanvas.height - 1.0)
+        );
+    }
     if (l7 !== null) gl.uniform4f(l7, d.getFullYear(), d.getMonth(), d.getDate(),
         d.getHours() * 60 * 60 + d.getMinutes() * 60 + d.getSeconds());
     //vec4 mouseN = vec4(mouse.x/resolution.x/2., 1.-mouse.y/resolution.y/2., mouse.z/resolution.x/2., 1.-mouse.w/resolution.y/2.);
-    if (mouseNU != null) 
+    if (mouseNU != null)
         gl.uniform4f(mouseNU,
-            mMousePosX / mCanvas.width / 2.0, 
+            mMousePosX / mCanvas.width / 2.0,
             1.0 - mMousePosY / mCanvas.height / 2.0,
-            mMouseClickX / mCanvas.width / 2.0, 
+            mMouseClickX / mCanvas.width / 2.0,
             1.0 - mMouseClickY / mCanvas.height / 2.0
         );
 
