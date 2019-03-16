@@ -64,3 +64,53 @@ float sqrOsc(float f, float phase) {
 float sqrOsc(float f) {
     return sqrOsc(f, 0.0);
 }
+
+// Standing variants, with s prefix
+
+float sSinOsc(float f, float phase, float t) {
+    return sinOsc(f, phase, t)*0.5 + sinOsc(f, -phase, t)*0.5;
+}
+
+float sSinOsc(float f, float phase) {
+    return sSinOsc(f, phase, time);
+}
+
+float sSinOsc(float f) {
+    return sSinOsc(f, 0.0);
+}
+
+float sTriOsc(float f, float phase, float t) {
+    return triOsc(f, phase, t)*0.5 + triOsc(f, -phase, t);
+}
+
+float sTriOsc(float f, float phase) {
+    return sTriOsc(f, phase, time);
+}
+
+float sTriOsc(float f) {
+    return sTriOsc(f, 0.0);
+}
+
+float sSawOsc(float f, float phase, float t) {
+    return sawOsc(f, phase, t)*0.5 + sawOsc(f, -phase, t);
+}
+
+float sSawOsc(float f, float phase) {
+    return sSawOsc(f, phase, time);
+}
+
+float sSawOsc(float f) {
+    return sSawOsc(f, 0.0);
+}
+
+float sSqrOsc(float f, float phase, float t) {
+    return sqrOsc(f, phase, t)*0.5 + sqrOsc(f, -phase, t);
+}
+
+float sSqrOsc(float f, float phase) {
+    return sSqrOsc(f, phase, time);
+}
+
+float sSqrOsc(float f) {
+    return sSqrOsc(f, 0.0);
+}
