@@ -90,9 +90,9 @@ float truchetTile(vec4 tile, float edgeWidth, float feather) {
     return seg + smoothstep(innerRadius-feather, innerRadius+feather, dist) - smoothstep(radius-feather, radius+feather, dist);
 }
 
-vec4 rotateTile(vec4 tile, float rad) {
+vec4 rotateTile(vec4 tile, float percentage) {
     vec2 polar = rectToPolar(tile.xy);
-    return vec4(polarToRect(vec2(polar[0], polar[1] + rad)), tile.zw);
+    return vec4(polarToRect(vec2(polar[0], polar[1] + (percentage*PI2))), tile.zw);
 }
 
 vec4 translateTileContents(vec4 tile, vec2 translation) {
