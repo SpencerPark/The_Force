@@ -75,42 +75,26 @@ float sSinOsc(float f, float phase) {
     return sSinOsc(f, phase, time);
 }
 
-float sSinOsc(float f) {
-    return sSinOsc(f, 0.0);
-}
-
 float sTriOsc(float f, float phase, float t) {
-    return triOsc(f, phase, t)*0.5 + triOsc(f, -phase, t);
+    return triOsc(f, phase, t)*0.5 + triOsc(f, -phase, t)*0.5;
 }
 
 float sTriOsc(float f, float phase) {
     return sTriOsc(f, phase, time);
 }
 
-float sTriOsc(float f) {
-    return sTriOsc(f, 0.0);
-}
-
 float sSawOsc(float f, float phase, float t) {
-    return sawOsc(f, phase, t)*0.5 + sawOsc(f, -phase, t);
+    return sawOsc(f, phase, t)*0.5 + sawOsc(f, -phase, t)*0.5;
 }
 
 float sSawOsc(float f, float phase) {
     return sSawOsc(f, phase, time);
 }
 
-float sSawOsc(float f) {
-    return sSawOsc(f, 0.0);
-}
-
 float sSqrOsc(float f, float phase, float t) {
-    return sqrOsc(f, phase, t)*0.5 + sqrOsc(f, -phase, t);
+    return sqrOsc(f, phase, t)*0.5 + sqrOsc(f, -phase, t)*0.5;
 }
 
 float sSqrOsc(float f, float phase) {
     return sSqrOsc(f, phase, time);
-}
-
-float sSqrOsc(float f) {
-    return sSqrOsc(f, 0.0);
 }

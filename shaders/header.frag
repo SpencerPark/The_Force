@@ -356,6 +356,6 @@ float hline(float y, float stroke) {
     return parallelLine(y, stroke, uvN().y);
 }
 
-float vline(float y, float stroke) {
-    return parallelLine(y, stroke, uvN().x);
+float vline(float x, float stroke) {
+    return parallelLine(x, stroke, uvN().x);
 }

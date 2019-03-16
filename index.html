@@ -408,10 +408,23 @@ float truchetTile(vec4 tile, float edgeWidth, float feather);
 
 // Punctual oscillators
 float phasor(float freq);
+
 float sinOsc(float freq);
 float triOsc(float freq);
 float sawOsc(float freq);
 float sqrOsc(float freq);
+
+// All oscillators all have overloads like the following with standing
+// variants prefixed with s.
+float sinOsc(float freq, float phase);
+float sinOsc(float fres, float phase, float time); 
+float sSinOsc(float freq, float phase);
+float sSinOsc(float freq, float phase, float time);
+
+// Lines
+float hline(float y, float stroke);
+float vline(float x, float stroke);
+float parallelLine(float linePos, float stroke, float pixelPos);
                 </pre>
             </div>
             <div id="tabsHelp-4">
