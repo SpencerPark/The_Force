@@ -22,7 +22,7 @@ vec4 tile(float tilesPerUnit) {
 }
 
 vec4 tileC(vec2 tilesPerUnit) {
-    return tile(tilesPerUnit, vec2(-0.5));
+    return tile(tilesPerUnit, vec2(0.5));
 }
 
 vec4 tileC(float tilesPerUnit) {
@@ -97,4 +97,14 @@ vec4 rotateTile(vec4 tile, float rad) {
 
 vec4 translateTileContents(vec4 tile, vec2 translation) {
     return vec4(tile.xy+translation, tile.zw);
+}
+
+vec4 withCenteredCoords(vec4 tile, vec2 center) {
+    return vec4(tile.xy, abs(tile.zw)+center);
+}
+vec4 withCenteredCoords(vec4 tile, float center) {
+    return withCenteredCoords(tile, vec2(center));
+}
+vec4 withCenteredCoords(vec4 tile) {
+    return withCenteredCoords(tile, 0.0);
 }

@@ -396,6 +396,9 @@ vec4 tileC(float tilesPerUnit);
 // Tile transformers
 vec4 rotateTile(vec4 tile, float rad);
 vec4 translateTileContents(vec4 tile, vec2 translation);
+vec4 withCenteredCoords(vec4 tile, vec2 center);
+vec4 withCenteredCoords(vec4 tile, float center);
+vec4 withCenteredCoords(vec4 tile);
 
 // Tile shapes
 float circleTile(vec4 tile, const float width, float feather);
