@@ -348,14 +348,14 @@ vec3 hsv2rgb(vec3 c) {
 
 #define rescale(value, oldMin, oldMax, newMin, newMax) ((value - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin)
 
-float parallelLine(float linePos, float stroke, float pixelPos) {
+float line(float linePos, float stroke, float pixelPos) {
     return smoothstep(linePos-stroke, linePos, pixelPos) * smoothstep(linePos+stroke, linePos, pixelPos);
 }
 
 float hline(float y, float stroke) {
-    return parallelLine(y, stroke, uvN().y);
+    return line(y, stroke, uvN().y);
 }
 
 float vline(float x, float stroke) {
-    return parallelLine(x, stroke, uvN().x);
+    return line(x, stroke, uvN().x);
 }
