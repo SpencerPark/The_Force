@@ -345,3 +345,17 @@ vec3 hsv2rgb(vec3 c) {
     vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
+
+#define rescale(value, oldMin, oldMax, newMin, newMax) ((value - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin)
+
+float parallelLine(float linePos, float stroke, float pixelPos) {
+    return smoothstep(linePos-stroke, linePos, pixelPos) * smoothstep(linePos+stroke, linePos, pixelPos);
+}
+
+float hline(float y, float stroke) {
+    return parallelLine(y, stroke, uvN().y);
+}
+
+float vline(float y, float stroke) {
+    return parallelLine(y, stroke, uvN().x);
+}
