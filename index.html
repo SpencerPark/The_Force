@@ -23,6 +23,7 @@
     <script type="text/javascript" src="js/oscManager.js"></script>
     <script type="text/javascript" src="js/myMIDI.js"></script>
     <script type="text/javascript" src="js/pageGlobals.js"></script>
+    <script type="text/javascript" src="lib/peerjs.min.js"></script>
 </head>
 
 <body>
@@ -37,6 +38,7 @@
                 <li><a href="#tabs-3">Server</a></li>
                 <li><a href="#tabs-4">File</a></li>
                 <li><a href="#tabs-5">SoundCloud</a></li>
+                <li><a href="#tabs-6">RTCPeer</a></li>
             </ul>
             <div id="tabs-1">
                 <input type="submit" id="soundOffButton" value="all audio off" />
@@ -72,6 +74,25 @@
                 </div>
                 <div id="messageBox">
                 </div>
+            </div>
+            <div id="tabs-6">
+                <form id="peer-server">
+                    <input style="margin: 0.3em;" type="button" id="peer-server-connect" value="connect" />
+                    <div id="peer-server-connection" style="display: inline-block;clear:right;">NOT CONNECTED</div>
+                    <div>
+                        <input type="text" id="peer-server-host" 
+                               placeholder="host" value="localhost" />
+                        <input type="number" id="peer-server-port" 
+                               placeholder="port" value="9000" />
+                        <input type="text" id="peer-server-path" 
+                               placeholder="api-path" value="/peers" />
+                        <input type="text" id="peer-id" 
+                               placeholder="server-peer-id" />
+                    </div>
+                    <div>
+                        <audio id="peer-player" controls autoplay></audio>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

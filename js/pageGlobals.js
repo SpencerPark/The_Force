@@ -23,6 +23,9 @@ var mCompileTimer = null;
 var editor = null;
 mErrors = new Array();
 
+// rtc peer
+var peer = null;
+
 
 $(document).ready(function () {
     //--------------------- FOOTER UI ------------
@@ -228,6 +231,8 @@ $(document).ready(function () {
             mSound.mSource.disconnect();
             initAudio();
             $("#micTogglePlaythrough").button("disable");
+            var player = document.getElementById('peer-player');
+            player.pause();
         });
 
     $("#micToggleButton")
@@ -356,6 +361,101 @@ $(document).ready(function () {
                 $("#soundFile").attr('loop', 'false');
         });
 
+    $('#peer-server-connect')
+        .button()
+        .click(function () {
+            if (peer != null) {
+                peer.disconnect();
+                peer = null;
+            }
+            const host = $('#peer-server-host').val();
+            const port = $('#peer-server-port').val();
+            const path = $('#peer-server-path').val();
+            const peerId = $('#peer-id').val();
+            peer = new Peer({
+                debug: true,
+                host,
+                port,
+                path
+            });
+            peer.on('error', function (err) {
+                $('#peer-server-connection').text(`ERROR: ${err}`);
+                console.error(err);
+            })
+            peer.on('disconnected', function () {
+                $('#peer-server-connection').text('NOT CONNECTED: waiting for id...');
+            });
+            peer.on('open', function (id) {
+                $('#peer-server-connection').text(`CONNECTING: self-id=${id}`);
+
+                const conn = peer.connect(peerId);
+                conn.on('open', function () {
+                    $('#peer-server-connection').text(`CALLING ${peerId}: self-id=${id}`);
+                    conn.on('data', function (data) {
+                        console.log(`Received from ${peerId}`, data);
+                    });
+
+                    conn.send('CALL');
+                });
+
+                peer.on('call', function (call) {
+                    $('#peer-server-connection').text(`WAITING FOR STREAM from ${peerId}: self-id=${id}`);
+
+                    call.answer(null, {
+                        constraints: {
+                            optional: [],
+                            mandatory: {
+                                OfferToReceiveAudio: true,
+                                OfferToReceiveVideo: false
+                            }
+                        }
+                    }); // One way call
+
+                    call.on('stream', function (media) {
+                        $('#peer-server-connection').text(`CONNECTED to ${peerId}: self-id=${id}`);
+                        mSound = null;
+                        initAudio();
+                        mSound.mStream = media;
+                        mSound.mSource = mAudioContext.createMediaStreamSource(media);
+                        mSound.mSource.connect(mSound.mAnalyser);
+                        
+                        var player = document.getElementById('peer-player');
+                        player.srcObject = media;
+                        
+                        bandsOn = true;
+                    });
+                });
+            });
+        })
+    /*
+     ;(() => {
+            const script = document.createElement('script');
+            script.setAttribute('type', 'text/javascript');
+            script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js');
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+            window.peer = new Peer({
+                debug: true,
+                host: 'localhost', port: 9000, path: '/peers'
+            });
+            peer.on('open', function(id) {
+                console.log(`OPEN: id=${id}`);
+            });
+            peer.on('error', function(err) {
+                console.log(`ERROR: ${err}`);
+            });
+            peer.on('disconnected', function() {
+                console.log('NOT CONNECTED: waiting for id...');
+            });
+            peer.on('connection', function(conn) {
+                conn.on('data', function(data) {
+                    if (data === 'CALL') {
+                        peer.call(conn.peer, ___stream.stream);
+                    }
+                })
+            });
+        })();
+    */
     // audioElement.addEventListener('ended', function() {
     // this.currentTime = 0;
     // this.play();
@@ -400,6 +500,7 @@ $(document).ready(function () {
             mSound.javascriptNode.onaudioprocess = function () {
                 updateFourBands();
             };
+            mAudioContext.resume();
         }
 
         if (mSound.mStream) { //clean up any user media stream 

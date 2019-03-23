@@ -1,4 +1,5 @@
 var fbos = [null, null];
+var pencilFbos = [null, null];
 var pingPong = 0;
 var mQuadVBO = null;
 var mQuadTVBO = null;
@@ -30,7 +31,7 @@ function createGlContext() {
     for (var i = 0; i < names.length; i++) {
         try {
             gGLContext = mCanvas.getContext(names[i], {
-                alpha: false,
+                alpha: true,
                 depth: false,
                 antialias: false,
                 stencil: false,
@@ -455,6 +456,9 @@ function resizeGLCanvas(width, height) {
 
     fbos[0] = createTarget(mCanvas.width, mCanvas.height);
     fbos[1] = createTarget(mCanvas.width, mCanvas.height);
+    
+    pencilFbos[0] = createTarget(mCanvas.width, mCanvas.height);
+    pencilFbos[1] = createTarget(mCanvas.width, mCanvas.height);
 }
 
 function updateKeyboardDown(event) {
