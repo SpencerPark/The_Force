@@ -360,46 +360,64 @@ $(document).ready(function () {
             else
                 $("#soundFile").attr('loop', 'false');
         });
-
+    
+    function setPeerStatus(status) {
+        const id = peer != null ? `id=${peer.id}\n` : '';
+        $('#peer-server-connection').text(`${id}${status}`);
+    }
+    function disconnectPeer() {
+        if (peer != null)
+            peer.disconnect();
+        peer = null;
+        $('#peer-server-connect').val('connect');
+        setPeerStatus('NOT CONNECTED');
+    }
     $('#peer-server-connect')
         .button()
         .click(function () {
             if (peer != null) {
-                peer.disconnect();
-                peer = null;
+                disconnectPeer();
+                return;
             }
+            
+            const secure = document.getElementById('peer-server-secure').checked;
             const host = $('#peer-server-host').val();
             const port = $('#peer-server-port').val();
             const path = $('#peer-server-path').val();
             const peerId = $('#peer-id').val();
+            
+            if (peerId == '') {
+                setPeerStatus(`Peer id required...`);
+                return;
+            }
+        
+            $('#peer-server-connect').val('disconnect');
             peer = new Peer({
-                debug: true,
-                host,
-                port,
-                path
+                debug: 2, secure, host, port, path
             });
+            setPeerStatus(`Connecting to peer matchmaking server: http${secure ? 's' : ''}://${host}:${port}${path}`);
             peer.on('error', function (err) {
-                $('#peer-server-connection').text(`ERROR: ${err}`);
+                setPeerStatus(`ERROR: ${err}`);
                 console.error(err);
             })
             peer.on('disconnected', function () {
-                $('#peer-server-connection').text('NOT CONNECTED: waiting for id...');
+                disconnectPeer();
             });
             peer.on('open', function (id) {
-                $('#peer-server-connection').text(`CONNECTING: self-id=${id}`);
+                setPeerStatus(`CONNECTING to peer=${peerId}`);
 
                 const conn = peer.connect(peerId);
                 conn.on('open', function () {
-                    $('#peer-server-connection').text(`CALLING ${peerId}: self-id=${id}`);
+                    setPeerStatus(`CALLING peer=${peerId}`);
                     conn.on('data', function (data) {
-                        console.log(`Received from ${peerId}`, data);
+                        console.log(`Received from peer=${peerId}`, data);
                     });
 
                     conn.send('CALL');
                 });
 
                 peer.on('call', function (call) {
-                    $('#peer-server-connection').text(`WAITING FOR STREAM from ${peerId}: self-id=${id}`);
+                    setPeerStatus(`WAITING FOR STREAM from peer=${peerId}`);
 
                     call.answer(null, {
                         constraints: {
@@ -412,15 +430,14 @@ $(document).ready(function () {
                     }); // One way call
 
                     call.on('stream', function (media) {
-                        $('#peer-server-connection').text(`CONNECTED to ${peerId}: self-id=${id}`);
+                        setPeerStatus(`CONNECTED to peer=${peerId}`);
                         mSound = null;
                         initAudio();
+                        var player = document.getElementById('peer-player');
+                        player.srcObject = media;
                         mSound.mStream = media;
                         mSound.mSource = mAudioContext.createMediaStreamSource(media);
                         mSound.mSource.connect(mSound.mAnalyser);
-                        
-                        var player = document.getElementById('peer-player');
-                        player.srcObject = media;
                         
                         bandsOn = true;
                     });
@@ -433,27 +450,30 @@ $(document).ready(function () {
             script.setAttribute('type', 'text/javascript');
             script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js');
             document.getElementsByTagName('head')[0].appendChild(script);
-
-            window.peer = new Peer({
-                debug: true,
-                host: 'localhost', port: 9000, path: '/peers'
-            });
-            peer.on('open', function(id) {
-                console.log(`OPEN: id=${id}`);
-            });
-            peer.on('error', function(err) {
-                console.log(`ERROR: ${err}`);
-            });
-            peer.on('disconnected', function() {
-                console.log('NOT CONNECTED: waiting for id...');
-            });
-            peer.on('connection', function(conn) {
-                conn.on('data', function(data) {
-                    if (data === 'CALL') {
-                        peer.call(conn.peer, ___stream.stream);
-                    }
-                })
-            });
+            script.onerror = () => { throw new Error('Could not load script.'); };
+            script.onload = () => {
+                window.peer = new Peer({
+                    debug: true,
+                    host: 'localhost', port: 9000, path: '/peers'
+                });
+                peer.on('open', function(id) {
+                    console.log(`OPEN: id=${id}`);
+                });
+                peer.on('error', function(err) {
+                    console.log(`ERROR: ${err}`);
+                });
+                peer.on('disconnected', function() {
+                    console.log('NOT CONNECTED: waiting for id...');
+                });
+                peer.on('connection', function(conn) {
+                    conn.on('data', function(data) {
+                        if (data === 'CALL') {
+                            const streamNode = ___setEstuaryAudioDestination('stream');
+                            peer.call(conn.peer, streamNode.stream);
+                        }
+                    })
+                });
+            }
         })();
     */
     // audioElement.addEventListener('ended', function() {

@@ -1,16 +1,17 @@
-body, html {
+body,
+html {
     overflow: hidden;
-    cursor:url('../images/cursor.png');
+    cursor: url('../images/cursor.png');
 }
 
 #editor {
-    position: absolute; 
+    position: absolute;
     background: transparent;
-    left: 0px; 
+    left: 0px;
     top: 10px;
     bottom: 40px;
     right: 10px;
-    text-shadow: rgba( 0, 0, 0, 1 ) 0px 1px 1px;
+    text-shadow: rgba( 0, 0, 0, 1) 0px 1px 1px;
 }
 
 .uiButton {
@@ -26,36 +27,44 @@ body, html {
     display: none;
 }
 
-.ui-widget{
-    font-size:12px;
+.ui-widget {
+    font-size: 12px;
 }
+
 .ui-tabs {
     border: none;
     background: transparent;
     padding: .5em;
 }
+
 .ui-dialog {
-    background:rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
 }
+
 .ui-dialog-content {
     padding: 0 !important;
 }
+
 .ui-widget-header {
-    background:rgba(128,128,128,0.4);
+    background: rgba(128, 128, 128, 0.4);
 }
+
 .ui-selectmenu-button {
-    background:rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.4);
 }
+
 .ui-selectmenu-menu {
-    background:rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
 }
+
 .ui-selectmenu-open {
-    z-index:2000 !important;
+    z-index: 2000 !important;
 }
+
 .tabTable {
     height: 150px;
     overflow: auto;
-    text-shadow: rgba( 0, 0, 0, 1 ) 0px 1px 1px;
+    text-shadow: rgba( 0, 0, 0, 1) 0px 1px 1px;
     display: table;
 }
 
@@ -64,7 +73,7 @@ body, html {
     height: auto;
 }
 
-.leftColumn{
+.leftColumn {
     display: table-cell;
     width: 60px;
 }
@@ -72,7 +81,6 @@ body, html {
 .rightColumn {
     display: table-cell;
 }
-
 
 .texTable {
     /*height: 150px;*/
@@ -85,11 +93,12 @@ body, html {
     height: auto;
 }
 
-.texCell{
+.texCell {
     display: table-cell;
     width: 60px;
 }
-.texCell > p{
+
+.texCell>p {
     padding-left: 5px;
 }
 
@@ -100,27 +109,29 @@ body, html {
 .codeHighlight {
     word-wrap: break-word;
     margin: 0;
-
 }
-.codeHighlight .ace-monokai{  
-    background-color: rgba(0,0,0,0.4);
+
+.codeHighlight .ace-monokai {
+    background-color: rgba(0, 0, 0, 0.4);
     padding: .5em;
 }
-#colorCorrectPanel > div {
-    width:250px;
+
+#colorCorrectPanel>div {
+    width: 250px;
     margin-left: 10px;
 }
-#colorCorrectPanel p  {
-  margin-left: 20px;
+
+#colorCorrectPanel p {
+    margin-left: 20px;
 }
 
 #colorCorrectPanel p input {
-  width: 50px;
-  margin-left: 20px;
+    width: 50px;
+    margin-left: 20px;
 }
 
 .textureSlot {
-    background-color:rgba(255,255,255,.5);
+    background-color: rgba(255, 255, 255, .5);
     width: 60px;
     height: 60px;
     padding: 3px;
@@ -130,12 +141,13 @@ body, html {
     margin-bottom: 0;
     border-radius: 4px;
 }
+
 .textureSlot:hover {
     cursor: pointer;
 }
 
 .textureOption {
-    background-color:rgba(255,255,255,.25);
+    background-color: rgba(255, 255, 255, .25);
     margin-top: 5px;
     margin-left: 5px;
     margin-bottom: 0;
@@ -145,15 +157,15 @@ body, html {
     width: 60px;
     height: 60px;
 }
+
 .textureOption:hover {
     cursor: pointer;
 }
 
-#edgesPanel {
-}
+#edgesPanel {}
 
 #socket_status {
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 5px;
 }
 
@@ -162,7 +174,7 @@ body, html {
     right: 0;
     bottom: 0;
     height: 40px;
-    position:absolute;    
+    position: absolute;
 }
 
 #fourBands {
@@ -177,26 +189,32 @@ body, html {
     color: #999;
     position: inherit;
     font-family: Helvetica;
-    left:110px;
+    left: 110px;
     top: 15px;
     font-size: 10pt;
-    text-shadow: rgba( 0, 0, 0, 1 ) .8px .8px 0px;
+    text-shadow: rgba( 0, 0, 0, 1) .8px .8px 0px;
 }
 
 #footerUI {
     position: relative;
     left: 150px;
-    background-color:rgba(0,0,0,.4);
+    background-color: rgba(0, 0, 0, .4);
 }
 
-#selectQualityDIV, #selectQuality{
+#selectQualityDIV,
+#selectQuality {
     width: 50px;
-} 
-#selectFontSizeDIV,  #selectFontSize{
+}
+
+#selectFontSizeDIV,
+#selectFontSize {
     width: 60px;
 }
 
-#selectMIDIInDIV, #selectMIDIOutDIV, #selectMIDIIn, #selectMIDIOut{
+#selectMIDIInDIV,
+#selectMIDIOutDIV,
+#selectMIDIIn,
+#selectMIDIOut {
     width: 180px;
 }
 
@@ -205,12 +223,13 @@ body, html {
     background-size: 24px 24px;
 }
 
-#debug + label {
+#debug+label {
     background: url('../images/debugOff.png') no-repeat center;
     background-size: 24px 24px;
 }
-#debug:checked + label {
-    background:url('../images/debugOn.png') no-repeat center;
+
+#debug:checked+label {
+    background: url('../images/debugOn.png') no-repeat center;
     background-size: 24px 24px;
 }
 
@@ -249,11 +268,12 @@ body, html {
     background-size: 24px 24px;
 }
 
-#play + label {
+#play+label {
     background: url('../images/pause.png') no-repeat center;
     background-size: 24px 24px;
 }
-#play:checked + label {
+
+#play:checked+label {
     background: url('../images/play.png') no-repeat center;
     background-size: 24px 24px;
 }
@@ -263,11 +283,12 @@ body, html {
     background-size: 24px 24px;
 }
 
-#myFullScreen + label {
+#myFullScreen+label {
     background: url('../images/fullscreen.png') no-repeat center;
     background-size: 24px 24px;
 }
-#myFullScreen:checked + label {
+
+#myFullScreen:checked+label {
     background: url('../images/fullscreen.png') no-repeat center;
     background-size: 24px 24px;
 }
@@ -279,4 +300,30 @@ body, html {
     position: absolute;
     display: block;
     z-index: -10;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+#peer-server .flex-row * {
+    flex-grow: 1;
+    margin: 0.2em 0.2em;
+}
+
+#peer-server .flex-row input[type="text"] {
+    flex-grow: 2;
+}
+
+#peer-server-connection {
+    display: inline-block;
+    clear: right;
+    vertical-align: middle;
+    white-space: pre-wrap;
 }

@@ -78,16 +78,20 @@
             <div id="tabs-6">
                 <form id="peer-server">
                     <input style="margin: 0.3em;" type="button" id="peer-server-connect" value="connect" />
-                    <div id="peer-server-connection" style="display: inline-block;clear:right;">NOT CONNECTED</div>
-                    <div>
-                        <input type="text" id="peer-server-host" 
-                               placeholder="host" value="localhost" />
-                        <input type="number" id="peer-server-port" 
-                               placeholder="port" value="9000" />
-                        <input type="text" id="peer-server-path" 
-                               placeholder="api-path" value="/peers" />
-                        <input type="text" id="peer-id" 
-                               placeholder="server-peer-id" />
+                    <div id="peer-server-connection">NOT CONNECTED</div>
+                    <div class="flex-column">
+                        <div class="flex-row">
+                            <div>
+                                https?
+                                <input type="checkbox" id="peer-server-secure" />
+                            </div>
+                            <input type="text" id="peer-server-host" placeholder="host" value="localhost" />
+                            <input type="number" id="peer-server-port" placeholder="port" value="9000" style="" />
+                        </div>
+                        <div class="flex-row">
+                            <input type="text" id="peer-server-path" placeholder="api-path" value="/peers" />
+                            <input type="text" id="peer-id" placeholder="server-peer-id" />
+                        </div>
                     </div>
                     <div>
                         <audio id="peer-player" controls autoplay></audio>
