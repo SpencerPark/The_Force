@@ -1,0 +1,51 @@
+{
+    "textureLayout": [
+        ["tex_none", "tex_keyboard", "tex_webcam", "tex_audio"],
+        ["tex_noisebw", "tex_noisecolor", "tex_nyan", null],
+        [null, null, null, null],
+        [null, null, null, null]
+    ],
+    "assets": {
+        "tex_none": {
+            "type": "none",
+            "desc": "Clear texture slot",
+            "icon": "previz/void.png"
+        },
+        "tex_keyboard": {
+            "type": "keyboard",
+            "desc": "Keyboard",
+            "icon": "previz/keyboard.png"
+        },
+        "tex_webcam": {
+            "type": "webcam",
+            "desc": "Webcam",
+            "icon": "previz/webcam.png"
+        },
+        "tex_audio": {
+            "type": "audio",
+            "desc": "Audio",
+            "icon": "previz/audio.png"
+        },
+        "tex_noisebw": {
+            "type": "image",
+            "desc": "Black and white noise",
+            "icon": "previz/noisebw.png",
+            "src": "noisebw.png",
+            "repeat": true
+        },
+        "tex_noisecolor": {
+            "type": "image",
+            "desc": "Colored noise",
+            "icon": "previz/noisecolor.png",
+            "src": "noisecolor.png",
+            "repeat": true
+        },
+        "tex_nyan": {
+            "type": "image",
+            "desc": "Nyan animation",
+            "icon": "previz/nyanIcon.png",
+            "src": "nyan.png",
+            "repeat": false
+        }
+    }
+}

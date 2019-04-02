@@ -68,11 +68,6 @@ html {
     display: table;
 }
 
-.tRow {
-    display: table-row;
-    height: auto;
-}
-
 .leftColumn {
     display: table-cell;
     width: 60px;
@@ -82,23 +77,21 @@ html {
     display: table-cell;
 }
 
-.texTable {
-    /*height: 150px;*/
-    /*overflow: auto;*/
+.texture-table {
     display: table;
 }
 
-.texRow {
+.texture-row {
     display: table-row;
     height: auto;
 }
 
-.texCell {
+.texture-cell {
     display: table-cell;
     width: 60px;
 }
 
-.texCell>p {
+.texture-cell > p {
     padding-left: 5px;
 }
 
