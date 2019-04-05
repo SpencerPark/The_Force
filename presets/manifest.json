@@ -2,8 +2,8 @@
     "textureLayout": [
         ["tex_none", "tex_keyboard", "tex_webcam", "tex_audio"],
         ["tex_noisebw", "tex_noisecolor", "tex_nyan", null],
-        [null, null, null, null],
-        [null, null, null, null]
+        ["tex_heart", "tex_box", "tex_ghost", "tex_pirate"],
+        ["tex_pokemon", "tex_banana", "tex_guy", null]
     ],
     "assets": {
         "tex_none": {
@@ -45,6 +45,55 @@
             "desc": "Nyan animation",
             "icon": "previz/nyanIcon.png",
             "src": "nyan.png",
+            "repeat": false
+        },
+        "tex_heart": {
+            "type": "image",
+            "desc": "Heart",
+            "icon": "00.png",
+            "src": "00.png",
+            "repeat": false
+        },
+        "tex_box": {
+            "type": "image",
+            "desc": "Box",
+            "icon": "02.png",
+            "src": "02.png",
+            "repeat": false
+        },
+        "tex_ghost": {
+            "type": "image",
+            "desc": "Ghost",
+            "icon": "03.png",
+            "src": "03.png",
+            "repeat": false
+        },
+        "tex_pirate": {
+            "type": "image",
+            "desc": "Pirate",
+            "icon": "04.png",
+            "src": "04.png",
+            "repeat": false
+        },
+        "tex_pokemon": {
+            "type": "image",
+            "desc": "Pokemon",
+            "icon": "05.png",
+            "src": "05.png",
+            "repeat": false
+        },
+        "tex_banana": {
+            "type": "image",
+            "desc": "Banana",
+            "icon": "06.png",
+            "src": "06.png",
+            "repeat": false
+        },
+        "tex_guy": {
+            "type": "image",
+            "desc": "Guy",
+            "icon": "07.png",
+            "src": "07.png",
             "repeat": false
         }
     }
