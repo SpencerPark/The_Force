@@ -1,9 +1,9 @@
 {
     "textureLayout": [
         ["tex_none", "tex_keyboard", "tex_webcam", "tex_audio"],
-        ["tex_noisebw", "tex_noisecolor", "tex_nyan", null],
+        ["tex_noisebw", "tex_noisecolor", "tex_nyan", "tex_clouds"],
         ["tex_heart", "tex_box", "tex_ghost", "tex_pirate"],
-        ["tex_pokemon", "tex_banana", "tex_guy", null]
+        ["tex_pokemon", "tex_banana", "tex_guy", "tex_droplet"]
     ],
     "assets": {
         "tex_none": {
@@ -94,6 +94,20 @@
             "desc": "Guy",
             "icon": "07.png",
             "src": "07.png",
+            "repeat": false
+        },
+        "tex_clouds": {
+            "type": "image",
+            "desc": "Clouds",
+            "icon": "clouds.png",
+            "src": "clouds.png",
+            "repeat": false
+        },
+        "tex_droplet": {
+            "type": "image",
+            "desc": "Droplet",
+            "icon": "droplet.png",
+            "src": "droplet.png",
             "repeat": false
         }
     }
