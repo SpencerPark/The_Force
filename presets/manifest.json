@@ -1,9 +1,9 @@
 {
     "textureLayout": [
-        ["tex_none", "tex_keyboard", "tex_webcam", "tex_audio"],
-        ["tex_noisebw", "tex_noisecolor", "tex_nyan", "tex_clouds"],
+        ["tex_none", "tex_keyboard", "tex_audio", "tex_sand"],
+        ["tex_clouds1", "tex_clouds2", "tex_clouds3", "tex_clouds"],
         ["tex_heart", "tex_box", "tex_ghost", "tex_pirate"],
-        ["tex_pokemon", "tex_banana", "tex_guy", "tex_droplet"]
+        ["tex_marble1", "tex_marble2", "tex_water1", "tex_water2"]
     ],
     "assets": {
         "tex_none": {
@@ -108,6 +108,62 @@
             "desc": "Droplet",
             "icon": "droplet.png",
             "src": "droplet.png",
+            "repeat": false
+        },
+        "tex_clouds1": {
+            "type": "image",
+            "desc": "Clouds 1",
+            "icon": "clouds1.png",
+            "src": "clouds1.png",
+            "repeat": false
+        },
+        "tex_clouds2": {
+            "type": "image",
+            "desc": "Clouds 2",
+            "icon": "clouds2.png",
+            "src": "clouds2.png",
+            "repeat": false
+        },
+        "tex_clouds3": {
+            "type": "image",
+            "desc": "Clouds 3",
+            "icon": "clouds3.png",
+            "src": "clouds3.png",
+            "repeat": false
+        },
+        "tex_marble1": {
+            "type": "image",
+            "desc": "Marble 1",
+            "icon": "marble1.png",
+            "src": "marble1.png",
+            "repeat": false
+        },
+        "tex_marble2": {
+            "type": "image",
+            "desc": "Marble 2",
+            "icon": "marble2.png",
+            "src": "marble2.png",
+            "repeat": false
+        },
+        "tex_water1": {
+            "type": "image",
+            "desc": "Water 1",
+            "icon": "water1.png",
+            "src": "water1.png",
+            "repeat": false
+        },
+        "tex_water2": {
+            "type": "image",
+            "desc": "Water 2",
+            "icon": "water2.png",
+            "src": "water2.png",
+            "repeat": false
+        },
+        "tex_sand": {
+            "type": "image",
+            "desc": "Sand",
+            "icon": "sand.png",
+            "src": "sand.png",
             "repeat": false
         }
     }
