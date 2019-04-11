@@ -26,6 +26,95 @@ mErrors = new Array();
 // rtc peer
 var peer = null;
 
+// audio analysis params
+var fftBandControlStaging = {
+    bounds: [0, 5, 11, 24, 512 / 2],
+    fftSizeExp: 9, // 2^9, Web audio default is 2048 (2^11)
+    powerScaling: [-100, -30], // Web audio default is [-100, -30]
+    smoothingTime: 0.5, // Web audio default is 0.8
+    stageBandBounds(bounds, isSliderUpdate) {
+        this.bounds = bounds;
+        if (isSliderUpdate) {
+            for (var i = 0; i < 5; i++)
+                $(`#fft-band-control-bins-${i}`)
+                .spinner('value', bounds[i]);
+        } else {
+            $('#fft-band-control-bins')
+                .limitslider('values', bounds);
+        }
+        this.updateStatus();
+    },
+    stageFFTSizeExp(size, isSliderUpdate) {
+        this.fftSizeExp = size;
+        if (isSliderUpdate) {
+            $('#fft-band-control-size')
+                .spinner('value', size);
+        } else {
+            $('#fft-band-control-size-slider')
+                .slider('value', size);
+        }
+        const maxBins = Math.pow(2, size) / 2;
+        $('#fft-band-control-bins-slider')
+            .limitslider('option', {
+                max: maxBins
+            });
+        for (let i = 0; i < 5; i++)
+            $(`#fft-band-control-bins-${i}`)
+            .spinner('option', {
+                max: maxBins
+            });
+        this.updateStatus();
+    },
+    stagePowerScaling(bounds, isSliderUpdate) {
+        this.powerScaling = bounds;
+        if (isSliderUpdate) {
+            $('#fft-band-control-min-db')
+                .spinner('value', bounds[0]);
+            $('#fft-band-control-max-db')
+                .spinner('value', bounds[1]);
+        } else {
+            $('#fft-band-control-power-scaling-slider')
+                .slider('values', bounds);
+        }
+        this.updateStatus();
+    },
+    stageMinPowerScaling(bound, isSliderUpdate) {
+        this.stagePowerScaling([bound, this.powerScaling[1]], isSliderUpdate);
+    },
+    stageMaxPowerScaling(bound, isSliderUpdate) {
+        this.stagePowerScaling([this.powerScaling[0], bound], isSliderUpdate);
+    },
+    stageSmoothingTime(time, isSliderUpdate) {
+        this.smoothingTime = time;
+        if (isSliderUpdate) {
+            $('#fft-band-control-smooth-time')
+                .spinner('value', time);
+        } else {
+            $('#fft-band-control-smooth-time-slider')
+                .slider('value', time);
+        }
+        this.updateStatus();
+    },
+    updateStatus() {
+        let current = '';
+        if (mSound != null) {
+            current += `\tbounds: ${JSON.stringify(mSound.analysisOpts.bounds)}`;
+            current += `\tfft: ${Math.pow(2, mSound.analysisOpts.fftSizeExp)}`;
+            current += `\tmin: ${mSound.analysisOpts.powerScaling[0]}db max: ${mSound.analysisOpts.powerScaling[1]}db`;
+            current += `\tsmoothing: ${mSound.analysisOpts.smoothingTime}`;
+        }
+        
+        let next = '';
+        next += `\tbounds: ${JSON.stringify(fftBandControlStaging.bounds)}`;
+        next += `\tfft: ${Math.pow(2, fftBandControlStaging.fftSizeExp)}`;
+        next += `\tmin: ${fftBandControlStaging.powerScaling[0]}db max: ${fftBandControlStaging.powerScaling[1]}db`;
+        next += `\tsmoothing: ${fftBandControlStaging.smoothingTime}`;
+        
+        $('#fft-band-control-status').text(`Current:\n${current}\nNext:\n ${next}`);
+    }
+};
+
+
 
 $(document).ready(function () {
     //--------------------- FOOTER UI ------------
@@ -203,7 +292,7 @@ $(document).ready(function () {
         .dialog({
             autoOpen: false,
             maxHeight: 400,
-            minWidth: 500,
+            minWidth: 620,
             show: {
                 effect: "clip",
                 duration: 250
@@ -476,6 +565,117 @@ $(document).ready(function () {
             }
         })();
     */
+    
+    fftBandControlStaging.updateStatus();
+    $('#fft-band-control-update')
+        .button()
+        .click(function (event) {
+            if (mSound != null)
+                setAnalysisOpts(fftBandControlStaging);
+        });
+    
+    function makeConnectedNumberInput(selector, getter, setter, options, validate) {
+        $(selector).val(getter.call(fftBandControlStaging));
+        
+        $(selector).spinner({
+            numberFormat: 'n',
+            ...options,
+            spin: (event, ui) => {
+                if (!validate(ui.value))
+                    return false;
+                
+                setter.call(fftBandControlStaging, ui.value, false);
+            },
+            change(event, ui) {
+                const val = parseFloat($(this).val());
+                if (validate(val))
+                    setter.call(fftBandControlStaging, val, false);
+                else
+                    setter.call(fftBandControlStaging, getter.call(fftBandControlStaging), true);
+            }
+        })
+    }
+    
+    $('#fft-band-control-bins-slider')
+        .limitslider({
+            orientation: 'horizontal',
+            gap: 1,
+            values: fftBandControlStaging.bounds,
+            ranges: [false, true, true, true, true, false],
+            min: 0,
+            max: 512 / 2, // TODO set to half the fftsize
+            step: 1,
+            slide: (event, ui) => fftBandControlStaging.stageBandBounds(ui.values, true)
+        });
+    for (let i = 0; i < 5; i++) {
+        makeConnectedNumberInput(`#fft-band-control-bins-${i}`,
+            () => fftBandControlStaging.bounds[i],
+            function (next, isSliderUpdate) {
+                this.stageBandBounds(
+                    this.bounds.map((prev, j) => i === j ? next : prev),
+                    isSliderUpdate
+                )
+            }, {
+                min: 0,
+                max: 512 / 2, // TODO set to half the fftsize
+                step: 1
+            },
+            v =>
+                (i === 0 || (v - fftBandControlStaging.bounds[i - 1]) >= 1) &&
+                (i === 4 || (fftBandControlStaging.bounds[i + 1] - v) >= 1)
+        )
+    }
+    
+    makeConnectedNumberInput('#fft-band-control-size',
+        () => fftBandControlStaging.fftSizeExp,
+        fftBandControlStaging.stageFFTSizeExp, {
+            min: 5, max: 15, step: 1.0
+        },
+        v => v >= 5 && v <= 15);
+    
+    $('#fft-band-control-size-slider').slider({
+        min: 5, max: 15, step: 1,
+        value: fftBandControlStaging.fftSizeExp,
+        slide: (event, ui) => fftBandControlStaging.stageFFTSizeExp(ui.value, true)
+    });
+    makeConnectedNumberInput('#fft-band-control-size',
+        () => fftBandControlStaging.fftSizeExp,
+        fftBandControlStaging.stageFFTSizeExp, {
+            min: 5, max: 15, step: 1.0
+        },
+        v => v >= 5 && v <= 15);
+    
+    $('#fft-band-control-power-scaling-slider').slider({
+        range: true,
+        min: -200, max: 0, step: 1,
+        values: fftBandControlStaging.powerScaling,
+        slide: (event, ui) => fftBandControlStaging.stagePowerScaling(ui.values, true)
+    });
+    makeConnectedNumberInput('#fft-band-control-min-db',
+        () => fftBandControlStaging.powerScaling[0],
+        fftBandControlStaging.stageMinPowerScaling, {
+            step: 1.0
+        },
+        v => v < fftBandControlStaging.powerScaling[1]);
+    makeConnectedNumberInput('#fft-band-control-max-db',
+        () => fftBandControlStaging.powerScaling[1],
+        fftBandControlStaging.stageMaxPowerScaling, {
+            step: 1.0
+        },
+        v => fftBandControlStaging.powerScaling[0] < v);
+    
+    $('#fft-band-control-smooth-time-slider').slider({
+        min: 0.0, max: 1.0, step: 1.0 / 100,
+        value: fftBandControlStaging.smoothingTime,
+        slide: (event, ui) => fftBandControlStaging.stageSmoothingTime(ui.value, true)
+    });
+    makeConnectedNumberInput('#fft-band-control-smooth-time',
+        () => fftBandControlStaging.smoothingTime,
+        fftBandControlStaging.stageSmoothingTime, {
+            min: 0.0, max: 1.0, step: 1.0 / 100
+        },
+        v => v >= 0.0 && v <= 1.0);
+    
     // audioElement.addEventListener('ended', function() {
     // this.currentTime = 0;
     // this.play();
@@ -503,23 +703,47 @@ $(document).ready(function () {
 
         return audioElement;
     }
+    
+    function setAnalysisOpts(opts) {
+        if (mSound.mAnalyser) {
+            mSound.mAnalyser.fft = Math.pow(2, opts.fftSizeExp);
+            mSound.mAnalyser.minDecibels = opts.powerScaling[0];
+            mSound.mAnalyser.maxDecibels = opts.powerScaling[1];
+            mSound.mAnalyser.smoothingTimeConstant = opts.smoothingTime;
+
+            mSound.mFreqData = new Uint8Array(mSound.mAnalyser.frequencyBinCount);
+            mSound.mWaveData = new Uint8Array(mSound.mAnalyser.fft);
+            
+            mSound.delayNode.delayTime = (mSound.mAnalyser.fft / mAudioContext.sampleRate);
+        }
+        
+        mSound.analysisOpts = {
+            ...opts,
+            powerScaling: [...opts.powerScaling],
+            bounds: [...opts.bounds],
+        };
+        fftBandControlStaging.updateStatus();
+    }
 
     function initAudio() {
         if (mSound === null) { // build a new sound object
             mSound = {};
             mSound.low = mSound.mid = mSound.upper = mSound.high = 0.0;
             mSound.mAnalyser = mAudioContext.createAnalyser();
-            mSound.mAnalyser.smoothingTimeConstant = 0.5;
-            mSound.mAnalyser.fft = 512;
-            mSound.mFreqData = new Uint8Array(mSound.mAnalyser.frequencyBinCount);
-            mSound.mWaveData = new Uint8Array(512);
+            mSound.delayNode = mAudioContext.createDelay();
+            setAnalysisOpts({
+                ...(mSound.analysisOpts || fftBandControlStaging),
+                aggregationStrategy: 'average'
+            });
 
             mSound.javascriptNode = mAudioContext.createScriptProcessor(1024, 2, 2);
+            
             mSound.mAnalyser.connect(mSound.javascriptNode);
-            mSound.javascriptNode.connect(mAudioContext.destination);
+            mSound.javascriptNode.connect(mSound.delayNode);
             mSound.javascriptNode.onaudioprocess = function () {
                 updateFourBands();
             };
+            mSound.delayNode.connect(mAudioContext.destination);
             mAudioContext.resume();
         }
 
@@ -546,46 +770,40 @@ $(document).ready(function () {
         if (mAudioContext === null) return;
 
         mSound.mAnalyser.getByteFrequencyData(mSound.mFreqData);
-
-        var k = 0;
-        var f = 0.0;
-        var a = 5,
-            b = 11,
-            c = 24,
-            d = 512,
-            i = 0;
-        for (; i < a; i++)
-            f += mSound.mFreqData[i];
-
-        f *= .2; // 1/(a-0)
-        f *= .003921569; // 1/255
+        
+        const data = mSound.mFreqData;
+        const [a, b, c, d, e] = mSound.analysisOpts.bounds;
+        let bin = a;
+        
+        let f = 0.0;
+        for (; bin < b; bin++)
+            f += data[bin];
+        f /= b-a; // Average over the bins TODO aggregationStrategy
+        f /= 255; // Normalize byte data: 0-255 -> 0-1
         drawBandsRect(0, aCanvas, f);
         mSound.low = f;
-
+        
         f = 0.0;
-        for (; i < b; i++)
-            f += mSound.mFreqData[i];
-
-        f *= .166666667; // 1/(b-a)
-        f *= .003921569; // 1/255
+        for (; bin < c; bin++)
+            f += data[bin];
+        f /= c-b;
+        f /= 255;
         drawBandsRect(1, aCanvas, f);
         mSound.mid = f;
-
+        
         f = 0.0;
-        for (; i < c; i++)
-            f += mSound.mFreqData[i];
-
-        f *= .076923077; // 1/(c-b)
-        f *= .003921569; // 1/255
+        for (; bin < d; bin++)
+            f += data[bin];
+        f /= d-c;
+        f /= 255;
         drawBandsRect(2, aCanvas, f);
         mSound.upper = f;
-
+        
         f = 0.0;
-        for (; i < d; i++)
-            f += mSound.mFreqData[i];
-
-        f *= .00204918; // 1/(d-c)
-        f *= .003921569; // 1/255
+        for (; bin < e; bin++)
+            f += data[bin];
+        f /= e-d;
+        f /= 255;
         drawBandsRect(3, aCanvas, f);
         mSound.high = f;
     }

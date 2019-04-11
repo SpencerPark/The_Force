@@ -304,6 +304,7 @@ html {
 .flex-row {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 #peer-server .flex-row * {
@@ -320,4 +321,16 @@ html {
     clear: right;
     vertical-align: middle;
     white-space: pre-wrap;
+}
+
+#fft-band-control .flex-row > * {
+    flex-grow: 1;
+    margin: 0.2em 0.2em;
+}
+
+#fft-band-control input:not([type]) {
+    padding-left: 0;
+    padding-right: 0;
+    width: calc(100% - 22px);
+    box-sizing: border-box;
 }

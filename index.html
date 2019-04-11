@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.limitslider.js"></script>
     <script type="text/javascript" src="lib/fpsmeter.js"></script>
     <script type="text/javascript" src="lib/ace/ace.js"></script>
     <script type="text/javascript" src="lib/ace/ext-language_tools.js"></script>
@@ -19,16 +20,17 @@
     <script type="text/javascript" src="lib/canvas-toBlob.js"></script>
     <script type="text/javascript" src="lib/osc.js"></script>
     <script src="https://connect.soundcloud.com/sdk.js"></script>
-    
+    <script type="text/javascript" src="lib/peerjs.min.js"></script>
+
     <script type="text/javascript">
         window.PRESET_MANIFEST = fetch('./presets/manifest.json')
             .then(resp => resp.json())
+
     </script>
     <script type="text/javascript" src="js/openGL.js"></script>
     <script type="text/javascript" src="js/oscManager.js"></script>
     <script type="text/javascript" src="js/myMIDI.js"></script>
     <script type="text/javascript" src="js/pageGlobals.js"></script>
-    <script type="text/javascript" src="lib/peerjs.min.js"></script>
 </head>
 
 <body>
@@ -44,6 +46,7 @@
                 <li><a href="#tabs-4">File</a></li>
                 <li><a href="#tabs-5">SoundCloud</a></li>
                 <li><a href="#tabs-6">RTCPeer</a></li>
+                <li><a href="#tabs-7">FFT Band Control</a></li>
             </ul>
             <div id="tabs-1">
                 <input type="submit" id="soundOffButton" value="all audio off" />
@@ -100,6 +103,61 @@
                     </div>
                     <div>
                         <audio id="peer-player" controls autoplay></audio>
+                    </div>
+                </form>
+            </div>
+            <div id="tabs-7">
+                <form id="fft-band-control">
+                    <input style="margin: 0.3em;" type="button" id="fft-band-control-update" value="update" />
+                    <div id="fft-band-control-status" style="white-space: pre"></div>
+                    <div class="flex-col">
+                        <div class="flex-row">
+                            <p style="white-space: pre">FFT Band Bins:</p>
+                            <div class="flex-col">
+                                <div class="flex-row">
+                                    <input id="fft-band-control-bins-0" placeholder="min" />
+                                    <input id="fft-band-control-bins-4" placeholder="max" />
+                                </div>
+                                <div class="flex-row">
+                                    <input id="fft-band-control-bins-1" placeholder="low-mid" />
+                                    <input id="fft-band-control-bins-2" placeholder="mid" />
+                                    <input id="fft-band-control-bins-3" placeholder="mid-high" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div id="fft-band-control-bins-slider"></div>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="flex-row">
+                            <p style="white-space: pre">FFT size (2<sup>x</sup>):</p>
+                            <input id="fft-band-control-size" placeholder="fft size" />
+                        </div>
+                        <div class="flex-row">
+                            <div id="fft-band-control-size-slider"></div>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="flex-row">
+                            <p style="white-space: pre">FFT power scaling:</p>
+                            <div class="flex-row">
+                                <input id="fft-band-control-min-db"  class="control-bins-bound" placeholder="min db" />
+                                <input id="fft-band-control-max-db" class="control-bins-bound" placeholder="max db" />
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div id="fft-band-control-power-scaling-slider"></div>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="flex-row">
+                            <p style="white-space: pre">Smoothing time:</p>
+                            <input id="fft-band-control-smooth-time" placeholder="smoothing time" />
+                        </div>
+                        <div class="flex-row">
+                            <div id="fft-band-control-smooth-time-slider"></div>
+                        </div>
                     </div>
                 </form>
             </div>
