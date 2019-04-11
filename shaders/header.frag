@@ -359,3 +359,10 @@ float hline(float y, float stroke) {
 float vline(float x, float stroke) {
     return line(x, stroke, uvN().x);
 }
+
+vec3 animate(float duration) {
+    float startTime = floor(time / duration) * duration;
+    float nextStartTime = startTime + duration;
+    float progress = (time - startTime) / duration;
+    return vec3(startTime, nextStartTime, progress);
+}

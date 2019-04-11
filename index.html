@@ -388,6 +388,12 @@ float sSinOsc(float freq, float phase, float time);
 float hline(float y, float stroke);
 float vline(float x, float stroke);
 float line(float linePos, float stroke, float pixelPos);
+
+// Returns the current animation frame vec3(startTime, nextStartTime, progress: 0..1)
+vec3 animate(float duration);
+
+// Rescale macro works on any float/vec types
+rescale(valueToRescale, oldMin, oldMax, newMin, newMax)
                 </pre>
             </div>
             <div id="tabsHelp-4">
